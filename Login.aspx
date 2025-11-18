@@ -266,7 +266,7 @@
                     <asp:TextBox ID="txtContrasena" runat="server" TextMode="Password" CssClass="form-control" />
                 </div>
 
-                <a href="#" class="forgot">Olvidé mi contraseña</a>
+                <a href="sistema.aspx" class="forgot">volver</a>
 
                 <asp:Button ID="btnIngresar" runat="server" Text="Iniciar Sesión" CssClass="btn-login" OnClick="btnIngresar_Click" />
 
