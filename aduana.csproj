@@ -255,6 +255,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Calendario.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Imagenes\Avion.jpg" />
     <Content Include="Imagenes\Calendario.png" />
@@ -263,10 +264,18 @@
     <Content Include="Inicio.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="sistema.aspx" />
+    <Content Include="SQLQuery2.sql" />
     <Content Include="sql\SQLQuery2.sql" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calendario.aspx.cs">
+      <DependentUpon>Calendario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Calendario.aspx.designer.cs">
+      <DependentUpon>Calendario.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\CtrlCadConexion.cs" />
     <Compile Include="Controllers\CtrlConexion.cs" />
     <Compile Include="Controllers\CtrlDashboard.cs" />
