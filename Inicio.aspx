@@ -306,10 +306,10 @@
             <div style="margin-top: 70px;"></div>
             <h2>Sistema Aduanero</h2>
             <span>Navegación</span>
-            <a href="Dashboard.aspx" class="active">Inicio</a>
-            <a href="Inventario.aspx">Historial</a>
-            <a href="Mantenimiento.aspx">Estado</a>
-            <a href="Hojadevida.aspx">Declaraciones</a>
+            <a href="Inicio.aspx" class="active">Inicio</a>
+            <a href="Historial.aspx">Historial</a>
+            <a href="Estado.aspx">Estado</a>
+            <a href="Declaraciones.aspx">Declaraciones</a>
             
             <asp:LinkButton ID="btnSalir" runat="server" CssClass="logout" OnClick="btnSalir_Click">Salir</asp:LinkButton>
         </div>

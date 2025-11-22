@@ -14,7 +14,7 @@ namespace Aduana.Controllers
 
             
 
-            string cad = "Data Source=HISADESARROLLO\\SQLEXPRESS;Initial Catalog=Sistema;User ID=adminaduanaaa;Password=Administrador1;Encrypt=False;TrustServerCertificate=True;";
+            string cad = "Data Source=NERAK\\SQLEXPRESS;Initial Catalog=SistemaAduanero;Integrated Security=True;TrustServerCertificate=True;";
 
 
             return cad;

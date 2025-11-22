@@ -32,7 +32,7 @@
         /* PANEL IZQUIERDO */
         .left-side {
             flex: 1.2;
-            background: url('Img/aduana.jpg') no-repeat center center/cover;
+            background: url('Img/aduana.jpg') no-repeat center ;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
