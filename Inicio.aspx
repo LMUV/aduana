@@ -276,7 +276,7 @@
         <div class="main-content">
             <div class="grid-container">
                 <asp:GridView ID="gvEquipos" runat="server" AutoGenerateColumns="False"
-                    CssClass="tabla-mantenimiento" GridLines="None" OnRowCommand="gvEquipos_RowCommand">
+                    CssClass="tabla-mantenimiento" GridLines="None" OnRowCommand="gvEstados_RowCommand">
                     <Columns>
                         <asp:BoundField DataField="FechaDeclaracion" HeaderText="Fecha de la Declaración" />
                         <asp:BoundField DataField="IdDeclaracion" HeaderText="Código Declaración" />

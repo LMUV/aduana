@@ -126,14 +126,7 @@ namespace Aduana
             }
             return dt;
         }
-        protected void gvEquipos_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            if (e.CommandName == "Ver")
-            {
-                string intcodMantenimiento = e.CommandArgument.ToString();
-                Response.Redirect("Calendario.aspx?codMtto=" + intcodMantenimiento);
-            }
-        }
+       
 
         //  Listar todos los equipos al inicio
         private DataTable ListarEquipos()
@@ -157,6 +150,17 @@ namespace Aduana
                 System.Diagnostics.Debug.WriteLine("Error al listar mercancias declaradas: " + ex.Message);
             }
             return dt;
+        }
+
+        protected void gvEstados_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Ver")
+            {
+                string IdDeclaracion = e.CommandArgument.ToString();
+                Response.Redirect("Estados_Inicio.aspx?id=" + IdDeclaracion);
+            }
+           
+
         }
 
 

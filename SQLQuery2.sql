@@ -318,23 +318,25 @@ BEGIN
     SET NOCOUNT ON;
 
     DECLARE @BUSQUEDA_UPPER VARCHAR(100) = UPPER(@BUSQUEDA);
-
-    SELECT 
-        me.IdDeclaracion AS IdDeclaracion,
-        dh.EstadoDeclaracion AS FechaDeclaracion,
+    SELECT
+    me.IdDeclaracion AS IdDeclaracion,
+		 dh.FechaDeclaracion AS FechaDeclaracion,
+        
 		Me.ResultadoInspeccion as ResultadoInspeccion,
         me.Descripcion AS Descripcion,
-       
+      
 	
         CASE 
-            WHEN dh.EstadoDeclaracion = 'Aprobado' THEN 'Aprobado'
-            WHEN dh.EstadoDeclaracion = 'Incautación' THEN 'Incautación'
-			WHEN dh.EstadoDeclaracion = 'Requiere Inspección' THEN 'Requiere Inspección' 
+            WHEN dh.EstadoDeclaracion = 'Liberada' THEN 'Aprobado'
+            WHEN dh.EstadoDeclaracion = 'Incautada' THEN 'Incautación'
+			WHEN dh.EstadoDeclaracion = 'En revisión' THEN 'Requiere Inspección' 
             ELSE 'Sin estado'
         END AS EstadoDeclaracion
        
     FROM Mercancia AS me
     INNER JOIN DeclaracionAduanera AS dh ON me.IdDeclaracion = dh.IdDeclaracion
+    
+ 
     
     WHERE 
         (
@@ -399,9 +401,68 @@ BEGIN
 
     
 END;
+GO
 
 
+CREATE OR ALTER PROCEDURE PA_FICHA_TECNICA_MERCANCIA_ID
+(
+    @IdDeclaracion INT
+)
+AS
+BEGIN
+    SET NOCOUNT ON;
 
+    SELECT 
+        P.Nombre + ' ' + P.Apellido AS Pasajero,
+        P.DocumentoIdentidad,
+        P.Nacionalidad,
+        P.Correo,
+        P.Telefono,
+
+        V.NumeroVuelo,
+        V.FechaLlegada,
+        V.Origen,
+        V.Destino,
+
+        D.IdDeclaracion,
+        D.FechaDeclaracion,
+        D.EstadoDeclaracion,
+        D.Observaciones AS ObsDeclaracion,
+
+        M.Descripcion AS MercanciaDescripcion,
+        M.Tipo AS TipoMercancia,
+        M.ValorDeclarado,
+        M.ResultadoInspeccion,
+
+        R.FechaRevision,
+        R.Resultado AS ResultadoRevision,
+        R.Observaciones AS ObsRevision,
+        U.strNomApellidos AS Inspector
+    FROM DeclaracionAduanera D
+    INNER JOIN Pasajero P ON P.IdPasajero = D.IdPasajero
+    INNER JOIN Vuelo V ON V.IdVuelo = D.IdVuelo
+    INNER JOIN Mercancia M ON M.IdDeclaracion = D.IdDeclaracion
+    LEFT JOIN RevisionAduanera R ON R.IdDeclaracion = D.IdDeclaracion
+    LEFT JOIN tblUsuarios U ON U.intCodUsuario = R.InspectorId
+    WHERE D.IdDeclaracion = @IdDeclaracion;
+END;
+GO
+
+create or ALTER   PROCEDURE [dbo].[PA_LISTAR_REVISION_ADUANERA]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+	RA.IdDeclaracion, RA.FechaRevision, RA.Resultado,RA.InspectorId, RA.Observaciones,U.strNomApellidos AS inspector, MER.Descripcion
+
+    FROM RevisionAduanera AS RA INNER JOIN tblUsuarios AS U ON U.intCodUsuario=RA.InspectorId
+	INNER JOIN  Mercancia AS MER ON MER.IdDeclaracion =RA.IdDeclaracion
+
+
+    
+END;
+GO
 
       
   
