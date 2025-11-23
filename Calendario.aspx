@@ -280,7 +280,7 @@
     <span>Navegación</span>
     <a href="Inicio.aspx" >Inicio</a>
     <a href="Historial.aspx">Historial</a>
-    <a href="Estado.aspx">Estado</a>
+    <a href="Estados.aspx">Estado</a>
     <a href="Declaraciones.aspx">Declaraciones</a>
     
     <asp:LinkButton ID="btnSalir" runat="server" CssClass="logout" OnClick="btnSalir_Click">Salir</asp:LinkButton>

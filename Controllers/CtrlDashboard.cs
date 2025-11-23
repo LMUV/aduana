@@ -12,8 +12,7 @@ namespace Aduana.Controllers
         
 
 
-        //--------------------MANTENIMIENTOS(TODOS)---------------------
-
+      
         public int Aprobados()
         {
             int total = 0;
@@ -37,7 +36,7 @@ namespace Aduana.Controllers
             }
             catch (Exception ex)
             {
-                // Aquí puedes loguear el error o mostrarlo
+                
                 throw new Exception("Error al obtener la carga Aprobada: " + ex.Message, ex);
             }
 
@@ -68,7 +67,7 @@ namespace Aduana.Controllers
             }
             catch (Exception ex)
             {
-                // Aquí puedes loguear el error o mostrarlo
+               
                 throw new Exception("Error al obtener la Carga que esta en Inspeccion : " + ex.Message, ex);
             }
 
@@ -98,7 +97,7 @@ namespace Aduana.Controllers
             }
             catch (Exception ex)
             {
-                // Aquí puedes loguear el error o mostrarlo
+                 
                 throw new Exception("Error al obtener la Carga Incautada: " + ex.Message, ex);
             }
 

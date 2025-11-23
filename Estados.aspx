@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Inicio.aspx.cs" Inherits="Aduana.Inicio" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Estados.aspx.cs" Inherits="Aduana.Estados" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -6,22 +6,22 @@
     <meta charset="utf-8" />
     <title>Ro(Aduana)</title>
     <style>
-        /*  General */
+        
         body {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f4f7fb; /* fondo elegante claro */
+            background-color: #f4f7fb; 
             color: #333;
         }
 
-        /*  Barra superior */
+      
         .topbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             height: 80px;
-            background-color: #0b3d91; /* azul rey */
+            background-color: #0b3d91; 
             display: flex;
             align-items: center;
             padding: 0 20px;
@@ -45,14 +45,13 @@
             font-weight: 600;
         }
 
-        /*  Sidebar */
         .sidebar {
             position: fixed;
             top: 0;
             left: -180px;
             width: 180px;
             height: 100%;
-            background-color: #e6ecf8; /* azul pastel */
+            background-color: #e6ecf8; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -92,7 +91,7 @@
         }
 
         .sidebar a.active {
-            background-color: #ffcc00; /* amarillo activo */
+            background-color: #ffcc00;
             color: #333;
             font-weight: bold;
         }
@@ -124,7 +123,7 @@
             background-color: #ff4d4d;
         }
 
-        /*  Contenido principal */
+      
         .main-content {
             margin-top: 100px;
             padding: 20px;
@@ -133,13 +132,13 @@
         .grid-container {
             width: 90%;
             margin: 0 auto;
-            background-color: #eef3fb; /* azul muy claro */
+            background-color: #eef3fb; 
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 10px;
         }
 
-        /*  Tabla */
+        
         .tabla-mantenimiento {
             width: 100%;
             border-collapse: collapse;
@@ -148,9 +147,21 @@
             overflow: hidden;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
         }
-
+               #btninvform {
+    background-color:#ffcc00 ;       
+    color: #fff;                   
+    border: none;                    
+    border-radius: 10px;             
+    padding: 10px 20px;             
+    font-size: 14px;                 
+    margin-top: 30px; 
+    margin-left: 50px;            
+    cursor: pointer;                
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;       
+}
         .tabla-mantenimiento th {
-            background-color: #0b3d91; /* azul rey */
+            background-color: #0b3d91; 
             color: white;
             text-align: left;
             padding: 10px;
@@ -166,7 +177,7 @@
             background-color: #f1f5ff;
         }
 
-        /*  Botones */
+       
         .btn-info {
             background-color: #0b3d91 !important;
             border: none !important;
@@ -204,7 +215,7 @@
     border: 1px solid #ccc;
 }
 
-        /*  Cards resumen */
+      
         .maintenance-summary {
             margin: 50px auto;
             width: 90%;
@@ -250,14 +261,14 @@
 
 <body>
     <form id="form2" runat="server">
-        <!--  Topbar -->
+       
         <div class="topbar">
             <img src="Imagenes/menu.png" alt="Menú" class="menu-icon" id="menuBtn" />
             <a href="Inicio.aspx">
                 <img src="Imagenes/casa.png" alt="Inicio" class="menu-icon"
                      style="width:40px; position:absolute; top:20px; left:60px; cursor:pointer;" />
             </a>
-            <h3 class="sistem">Sistema de Declaración de Mercancías</h3>
+            <h3 class="sistem">Estados</h3>
 
             <asp:TextBox ID="txtBuscar" runat="server" placeholder="Buscar Mercancías" CssClass="form-control"></asp:TextBox>
             <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn-primary" OnClick="btnBuscar_Click" />
@@ -274,25 +285,26 @@
 
         <!--  Contenido -->
         <div class="main-content">
+            <asp:Button ID="btninvform" runat="server" Text="Nueva Inspección" CssClass="btn-primary" OnClick="btnEstados_Click" />
+           
             <div class="grid-container">
                 <asp:GridView ID="gvEquipos" runat="server" AutoGenerateColumns="False"
                     CssClass="tabla-mantenimiento" GridLines="None" OnRowCommand="gvEstados_RowCommand">
                     <Columns>
-                        <asp:BoundField DataField="FechaDeclaracion" HeaderText="Fecha de la Declaración" />
+                      
+                         <asp:BoundField DataField="IdRevision" HeaderText="Código Revision" />
                         <asp:BoundField DataField="IdDeclaracion" HeaderText="Código Declaración" />
-                        <asp:BoundField DataField="Descripcion" HeaderText="Mercancía" />
-                        <asp:BoundField DataField="ResultadoInspeccion" HeaderText="Resultado de la Inspección" />
-                        <asp:TemplateField HeaderText="Estado de la Declaración">
-                            <ItemTemplate>
-                                <span class='<%# Eval("EstadoDeclaracion").ToString() == "En revisión" ? "estado pendiente" : "estado finalizado" %>'>
-                                    <%# Eval("EstadoDeclaracion") %>
-                                </span>
-                            </ItemTemplate>
-                        </asp:TemplateField>
+                           <asp:BoundField DataField="EstadoDeclaracion" HeaderText="Estado Declaración" />        
+                        <asp:BoundField DataField="FechaRevision" HeaderText="Fecha de la Revision " />
+                        <asp:BoundField DataField="strNomApellidos" HeaderText="Nombre Inspector" />
+                         <asp:BoundField DataField="Resultado" HeaderText="Resultado " />
+
+                       
+                        <asp:BoundField DataField="Observaciones" HeaderText="Observaciones" />
                         <asp:TemplateField HeaderText="Acción">
                             <ItemTemplate>
-                                <asp:Button ID="btnVer" runat="server" Text="Ver"
-                                    CommandName="Ver" CommandArgument='<%# Eval("IdDeclaracion") %>'
+                                <asp:Button ID="btnVer" runat="server" Text="Realizar Revision"
+                                    CommandName="Ver" CommandArgument='<%# Eval("IdRevision") %>'
                                     CssClass="btn btn-info text-white fw-bold px-3 py-1" />
                             </ItemTemplate>
                         </asp:TemplateField>
@@ -306,34 +318,16 @@
             <div style="margin-top: 70px;"></div>
             <h2>Sistema Aduanero</h2>
             <span>Navegación</span>
-            <a href="Inicio.aspx" class="active">Inicio</a>
+            <a href="Inicio.aspx">Inicio</a>
             <a href="Historial.aspx">Historial</a>
-            <a href="Estados.aspx">Estado</a>
+            <a href="Estados.aspx"  class="active">Estado</a>
             <a href="Declaraciones.aspx">Declaraciones</a>
             
             <asp:LinkButton ID="btnSalir" runat="server" CssClass="logout" OnClick="btnSalir_Click">Salir</asp:LinkButton>
         </div>
 
         <!--  Resumen -->
-        <div class="maintenance-summary">
-            <div class="card today">
-                <span class="status green">Aprobado</span>
-                <p class="title">Mercancías Aprobadas este año</p>
-                <asp:Label ID="Label1" runat="server" CssClass="label"></asp:Label>
-            </div>
-
-            <div class="card done">
-                <span class="status yellow">Inspeccionado</span>
-                <p class="title">Mercancías Inspeccionadas este año</p>
-                <asp:Label ID="Label2" runat="server" CssClass="label"></asp:Label>
-            </div>
-
-           <div class="card pending">
-                <span class="status red">Incautado</span>
-                <p class="title">Mercancías Incautadas este año</p>
-                <asp:Label ID="Label3" runat="server" CssClass="label"></asp:Label>
-            </div>
-        </div>
+       
 
         <script>
             const menuBtn = document.getElementById('menuBtn');
