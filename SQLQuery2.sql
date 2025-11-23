@@ -464,6 +464,136 @@ BEGIN
 END;
 GO
 
-      
+
   
+create or ALTER   PROCEDURE [dbo].[PA_LISTAR_ESTADOS]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+ SELECT
+    r.IdRevision AS IdRevision,
+    dh.IdDeclaracion AS IdDeclaracion,
+    dh.EstadoDeclaracion AS EstadoDeclaracion,
+
+    -- FECHA CONVERTIDA SIEMPRE A VARCHAR
+    CASE 
+        WHEN r.Resultado = 'Incautación' THEN CONVERT(VARCHAR(19), r.FechaRevision, 120)
+         WHEN r.Resultado = 'Aprobado' THEN CONVERT(VARCHAR(19), r.FechaRevision, 120)  
+        ELSE ''
+    END AS FechaRevision,
+
+
+    r.Resultado AS Resultado,
+    CASE 
+        WHEN r.Resultado = 'Incautación' then  us.strNomApellidos
+
+         WHEN r.Resultado = 'Aprobado' THEN   us.strNomApellidos
+
+        ELSE 'No se ha Inspeccionado'
+    END AS strNomApellidos,
+  
+
+   
+
+    -- Observaciones como texto
+    CASE 
+         WHEN r.Resultado = 'Incautación'  THEN r.Observaciones
+          WHEN r.Resultado = 'Aprobado'  THEN r.Observaciones
+       
+        ELSE ''
+    END AS Observaciones
+
+FROM RevisionAduanera AS r
+INNER JOIN DeclaracionAduanera AS dh 
+        ON r.IdDeclaracion = dh.IdDeclaracion
+INNER JOIN tblUsuarios AS us 
+        ON r.InspectorId = us.intCodUsuario
+ORDER BY r.FechaRevision DESC;
+
+END;
+go
+
+
+create or ALTER   PROCEDURE [dbo].[PA_BUSCAR_ESTADOS]
+    @BUSQUEDA VARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @BUSQUEDA_UPPER VARCHAR(100) = UPPER(@BUSQUEDA);
+   SELECT
+    r.IdRevision AS IdRevision,
+    dh.IdDeclaracion AS IdDeclaracion,
+    dh.EstadoDeclaracion AS EstadoDeclaracion,
+
+    -- FECHA CONVERTIDA SIEMPRE A VARCHAR
+    CASE 
+        WHEN r.Resultado = 'Incautación' THEN CONVERT(VARCHAR(19), r.FechaRevision, 120)
+         WHEN r.Resultado = 'Aprobado' THEN CONVERT(VARCHAR(19), r.FechaRevision, 120)  
+        ELSE 'Requiere Inspección'
+    END AS FechaRevision,
+
+
+    r.Resultado AS Resultado,
+    CASE 
+        WHEN r.Resultado = 'Incautación' THEN CONVERT(VARCHAR(19), r.InspectorId, 120)
+         WHEN r.Resultado = 'Aprobado' THEN CONVERT(VARCHAR(19), r.InspectorId, 120)
+        ELSE 'No se ha Inspeccionado'
+    END AS InspectorId,
+    us.strNomApellidos,
+
+   
+
+    -- Observaciones como texto
+    CASE 
+         WHEN r.Resultado = 'Incautación'  THEN r.Observaciones
+          WHEN r.Resultado = 'Aprobado'  THEN r.Observaciones
+       
+        ELSE ''
+    END AS Observaciones
+
+FROM RevisionAduanera AS r
+INNER JOIN DeclaracionAduanera AS dh 
+        ON r.IdDeclaracion = dh.IdDeclaracion
+INNER JOIN tblUsuarios AS us 
+        ON r.InspectorId = us.intCodUsuario
+    
+    
+    WHERE 
+        (
+            -- 🔹 Si se puede convertir a número, buscar por códigos o número de sticker
+            TRY_CAST(@BUSQUEDA_UPPER AS INT) IS NOT NULL 
+            AND (
+                DH.IdDeclaracion = TRY_CAST(@BUSQUEDA_UPPER AS INT) or 
+                r.IdRevision = TRY_CAST(@BUSQUEDA_UPPER AS INT)
+                
+            )
+        )
+        OR
+        (
+            -- 🔹 Si no es número, buscar por nombre del equipo (texto)
+            TRY_CAST(@BUSQUEDA_UPPER AS INT) IS NULL 
+            AND UPPER(us.strNomApellidos) LIKE '%' + @BUSQUEDA_UPPER + '%'
+			OR UPPER(DH.EstadoDeclaracion) LIKE '%' + @BUSQUEDA_UPPER + '%'
+        )
+    ORDER BY FechaDeclaracion DESC;
+END;
+go
+
+
+CREATE PROCEDURE PA_ELIMINAR_REVISION
+    @IdRevision INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DELETE FROM RevisionAduanera
+    WHERE IdRevision = @IdRevision;
+END
+GO
+ select * from tblUsuarios
+
+ALTER TABLE RevisionAduanera
+ALTER COLUMN InspectorId INT NULL;
            
