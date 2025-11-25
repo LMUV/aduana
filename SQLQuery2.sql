@@ -67,7 +67,7 @@ CREATE TABLE dbo.Mercancia (
     Tipo NVARCHAR(100) NOT NULL,
     ValorDeclarado DECIMAL(10,2) NULL,
     ResultadoInspeccion NVARCHAR(20) NOT NULL
-        CHECK (ResultadoInspeccion IN ('Normal','Sospechosa','Incautada')),
+        CHECK (ResultadoInspeccion IN ('Normal','Sospechosa')),
     CONSTRAINT FK_Mercancia_DeclaracionAduanera FOREIGN KEY (IdDeclaracion)
         REFERENCES dbo.DeclaracionAduanera (IdDeclaracion)
         ON DELETE CASCADE ON UPDATE CASCADE
@@ -88,6 +88,7 @@ CREATE TABLE dbo.Notificacion (
         ON UPDATE CASCADE
 );
 GO
+
 
 -- =========================
 -- Tabla: usuariosistema

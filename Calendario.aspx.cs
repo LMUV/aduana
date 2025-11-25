@@ -28,7 +28,7 @@ namespace aduana
             {
                 if (Session["UsuarioNombre"] != null)
                 {
-                    lblUsuario.Text = Session["UsuarioNombre"].ToString();
+                  
                    
                     
                     

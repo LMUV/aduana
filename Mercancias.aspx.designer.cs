@@ -11,7 +11,7 @@ namespace Aduana
 {
 
 
-    public partial class Historial
+    public partial class Mercancias
     {
 
         /// <summary>
@@ -24,15 +24,6 @@ namespace Aduana
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// Control btnSalir.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSalir;
-
-        /// <summary>
         /// Control lblUsuario.
         /// </summary>
         /// <remarks>
@@ -42,12 +33,12 @@ namespace Aduana
         protected global::System.Web.UI.WebControls.Label lblUsuario;
 
         /// <summary>
-        /// Control gvHistorial.
+        /// Control gvEquipos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvHistorial;
+        protected global::System.Web.UI.WebControls.GridView gvEquipos;
     }
 }

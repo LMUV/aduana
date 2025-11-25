@@ -93,10 +93,11 @@
                        
 
                         <label>Código Revision<span>*</span></label>
-                        <asp:TextBox ID="txtCodigoInterno" runat="server" CssClass="form-control"  />
+                        <asp:TextBox ID="txtCodigoInterno" runat="server" CssClass="form-control" Enabled="false"  />
 
                          <label>Código Declaración<span>*</span></label>
-                        <asp:TextBox ID="txtdeclaracion" runat="server" CssClass="form-control"   />
+                          <asp:DropDownList ID="ddldeclaracion" runat="server" CssClass="form-select" AutoPostBack="true" ></asp:DropDownList>
+                      
 
                        <label>Fecha Revision</label><asp:TextBox ID="txtfecha" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox></div>
                          

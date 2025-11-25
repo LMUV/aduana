@@ -3,20 +3,22 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
 using System;
-using System.Data.SqlClient;
-using System.IO;
-using System.Text;
-using System.Web.UI;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
+using System.Drawing.Printing;
+using System.IO;
+using System.Text;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace aduana
 {
     public partial class Estados_Inicio : System.Web.UI.Page
     {
-        
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,7 +32,7 @@ namespace aduana
             }
         }
 
-        
+
 
 
 

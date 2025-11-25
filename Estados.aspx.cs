@@ -27,7 +27,7 @@ namespace Aduana
                     CargarEstados();
 
 
-                    
+
                 }
                 else
                 {
@@ -65,7 +65,7 @@ namespace Aduana
             else
             {
                 dt = BuscarPorNombre(texto);
-               
+
             }
 
             gvEquipos.DataSource = dt;
@@ -91,7 +91,7 @@ namespace Aduana
             return EjecutarBusqueda("@BUSQUEDA", nombre);
         }
 
-       
+
 
         //  Método genérico para ejecutar el procedimiento
         private DataTable EjecutarBusqueda(string parametro, string valor)
@@ -117,7 +117,7 @@ namespace Aduana
             }
             return dt;
         }
-       
+
 
         //  Listar todos los equipos al inicio
         private DataTable ListarEquipos()
@@ -149,17 +149,30 @@ namespace Aduana
             {
                 string IdRevision = e.CommandArgument.ToString();
 
-           
+
                 Response.Redirect("Estados_frm.aspx?id=" + IdRevision);
+            }
+            else if (e.CommandName == "Verr")
+            {
+                 
+                
+                    string iddeclaracion = e.CommandArgument.ToString();
+
+
+                    Response.Redirect("Mercancias.aspx?id=" + iddeclaracion);
+                
             }
         }
 
+       
 
         protected void btnEstados_Click(object sender, EventArgs e)
         {
             Response.Redirect("Estados_frm.aspx", false);
             Context.ApplicationInstance.CompleteRequest();
         }
+
+      
 
 
     }

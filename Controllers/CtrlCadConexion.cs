@@ -7,7 +7,7 @@ namespace Aduana.Controllers
         public string CadenaConexion()
         {
             // Conexión local a SQL Express usando instancia por defecto
-            string cad = "Data Source=DESKTOP-U5A24RO\\SQLEXPRESS;Initial Catalog=SistemaAduanero1;Integrated Security=True; TrustServerCertificate=True;";
+            string cad ="Data Source=HISADESARROLLO\\SQLEXPRESS;Initial Catalog=Sistema;User ID=adminaduanaaa;Password=Administrador1;Encrypt=False;TrustServerCertificate=True;";
             return cad;
         }
     }

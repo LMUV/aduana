@@ -155,6 +155,13 @@
             </a>
         </div>
 
+          <div class="seccion" style="margin-top:50px;">
+      <a class="btn-login" href="Declaraciones.aspx">
+          <img src="https://cdn-icons-png.flaticon.com/512/3045/3045670.png">
+          Declarar mercancias
+      </a>
+  </div>
+
 
       
 

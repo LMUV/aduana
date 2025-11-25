@@ -21,17 +21,18 @@ namespace Aduana
     public partial class Estados_frm : Page
     {
 
-     
+
         string conexion = new Aduana.Controllers.CtrlCadConexion().CadenaConexion();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
 
-               
+
 
 
                 Inspectores();
+                Declaraciones();
 
                 CargarResultadoInspeccion();
 
@@ -51,20 +52,13 @@ namespace Aduana
         {
             try
             {
-                // Validar ID de revisión
-                if (string.IsNullOrWhiteSpace(txtCodigoInterno.Text) ||
-                    !int.TryParse(txtCodigoInterno.Text, out int codigorevision))
+                // ---------------------------------------------
+                // VALIDAR ID DECLARACIÓN (OBLIGATORIO)
+                // ---------------------------------------------
+                if (string.IsNullOrWhiteSpace(ddldeclaracion.Text))
                 {
                     lblMensaje.ForeColor = System.Drawing.Color.Red;
-                    lblMensaje.Text = "Código Revisión inválido.";
-                    return;
-                }
-
-                // Validar Id Declaración
-                if (string.IsNullOrWhiteSpace(txtdeclaracion.Text))
-                {
-                    lblMensaje.ForeColor = System.Drawing.Color.Red;
-                    lblMensaje.Text = "Debe ingresar el ID de la declaración.";
+                    lblMensaje.Text = "Debe seleccionar una declaración.";
                     return;
                 }
 
@@ -75,39 +69,46 @@ namespace Aduana
                     {
                         try
                         {
-                            bool revisionExiste;
+                            int codigorevision = 0;
+                            bool revisionExiste = false;
 
-                            // Verificar si existe la revisión
-                            using (SqlCommand cmdChk = new SqlCommand(
-                                "SELECT COUNT(*) FROM RevisionAduanera WHERE IdRevision=@id",
-                                cnn, tran))
+                            // ---------------------------------------------
+                            // SI HAY CÓDIGO → ES UPDATE
+                            // SI NO HAY CÓDIGO → ES INSERT
+                            // ---------------------------------------------
+                            if (!string.IsNullOrWhiteSpace(txtCodigoInterno.Text) &&
+                                int.TryParse(txtCodigoInterno.Text, out codigorevision))
                             {
-                                cmdChk.Parameters.AddWithValue("@id", codigorevision);
-                                revisionExiste = (int)cmdChk.ExecuteScalar() > 0;
+                                using (SqlCommand cmdChk = new SqlCommand(
+                                    "SELECT COUNT(*) FROM RevisionAduanera WHERE IdRevision=@id",
+                                    cnn, tran))
+                                {
+                                    cmdChk.Parameters.AddWithValue("@id", codigorevision);
+                                    revisionExiste = (int)cmdChk.ExecuteScalar() > 0;
+                                }
                             }
 
                             // Convertir fecha
-                            object fechaRevision;
-                            if (string.IsNullOrWhiteSpace(txtfecha.Text))
-                                fechaRevision = DBNull.Value;
-                            else if (DateTime.TryParse(txtfecha.Text, out DateTime fecha))
+                            object fechaRevision = DBNull.Value;
+                            if (!string.IsNullOrWhiteSpace(txtfecha.Text) &&
+                                DateTime.TryParse(txtfecha.Text, out DateTime fecha))
+                            {
                                 fechaRevision = fecha;
-                            else
-                                throw new Exception("Formato de fecha inválido.");
+                            }
 
-                            // ---------------------------------------------------------
+                            // =============================================
                             // UPDATE
-                            // ---------------------------------------------------------
+                            // =============================================
                             if (revisionExiste)
                             {
                                 using (SqlCommand cmdUpd = new SqlCommand(@"
-                            UPDATE RevisionAduanera
-                            SET 
-                                FechaRevision = @FechaRevision,
-                                Resultado     = @Resultado,
-                                InspectorId   = @InspectorId,
-                                Observaciones = @Observaciones
-                            WHERE IdRevision = @IdRevision",
+                        UPDATE RevisionAduanera
+                        SET 
+                            FechaRevision = @FechaRevision,
+                            Resultado     = @Resultado,
+                            InspectorId   = @InspectorId,
+                            Observaciones = @Observaciones
+                        WHERE IdRevision = @IdRevision",
                                     cnn, tran))
                                 {
                                     cmdUpd.Parameters.AddWithValue("@IdRevision", codigorevision);
@@ -124,45 +125,30 @@ namespace Aduana
                             }
                             else
                             {
-                                // ---------------------------------------------------------
-                                // INSERT
-                                // ---------------------------------------------------------
+                                // =============================================
+                                // INSERT  (SIN IdRevision → IDENTITY)
+                                // =============================================
                                 using (SqlCommand cmdIns = new SqlCommand(@"
-
-                            INSERT INTO RevisionAduanera(
-                               
-                                IdDeclaracion,
-                                FechaRevision,
-                                Resultado,
-                                InspectorId,
-                                Observaciones
-                            ) VALUES (
-                                
-                                @IdDeclaracion,
-                               ISNULL(@FechaRevision, ''), 
-                                ISNULL(@Resultado, 'Requiere Inspección'),
-                               ISNULL(@InspectorId, 1),
-                                ISNULL(@Observaciones, '')
-                            )",
+                        INSERT INTO RevisionAduanera(
+                            IdDeclaracion,
+                            FechaRevision,
+                            Resultado,
+                            InspectorId,
+                            Observaciones
+                        ) VALUES (
+                            @IdDeclaracion,
+                            @FechaRevision,
+                            @Resultado,
+                            @InspectorId,
+                            @Observaciones
+                        )",
                                     cnn, tran))
                                 {
-                                    cmdIns.Parameters.AddWithValue("@IdDeclaracion",
-    string.IsNullOrWhiteSpace(txtdeclaracion.Text) ? (object)DBNull.Value : txtdeclaracion.Text);
-
-                                    cmdIns.Parameters.AddWithValue("@FechaRevision",
-                                        string.IsNullOrWhiteSpace(txtfecha.Text) ? (object)DBNull.Value : Convert.ToDateTime(txtfecha.Text));
-
-                                    cmdIns.Parameters.AddWithValue("@Resultado",
-                                        string.IsNullOrWhiteSpace(ddlresultado.SelectedValue) ? (object)DBNull.Value : ddlresultado.SelectedValue);
-
-                                    cmdIns.Parameters.AddWithValue("@InspectorId",
-                                        string.IsNullOrWhiteSpace(ddlreponsable.SelectedValue) ? (object)DBNull.Value : ddlreponsable.SelectedValue);
-
-                                    cmdIns.Parameters.AddWithValue("@Observaciones",
-                                        string.IsNullOrWhiteSpace(txtobservar.Text) ? (object)DBNull.Value : txtobservar.Text);
-
-
-                                  
+                                    cmdIns.Parameters.AddWithValue("@IdDeclaracion", ddldeclaracion.SelectedValue);
+                                    cmdIns.Parameters.AddWithValue("@FechaRevision", fechaRevision);
+                                    cmdIns.Parameters.AddWithValue("@Resultado", ddlresultado.SelectedValue);
+                                    cmdIns.Parameters.AddWithValue("@InspectorId", ddlreponsable.SelectedValue);
+                                    cmdIns.Parameters.AddWithValue("@Observaciones", txtobservar.Text.Trim());
 
                                     cmdIns.ExecuteNonQuery();
                                 }
@@ -193,11 +179,12 @@ namespace Aduana
 
 
 
+
         private void Inspectores()
         {
             using (SqlConnection cnn = new SqlConnection(conexion))
             {
-                string query ="SELECT  intCodUsuario,strNomApellidos FROM  tblUsuarios where blnActivo=1";
+                string query = "SELECT  intCodUsuario,strNomApellidos FROM  tblUsuarios where blnActivo=1";
                 using (SqlCommand cmd = new SqlCommand(query, cnn))
                 {
                     cnn.Open();
@@ -210,12 +197,28 @@ namespace Aduana
             }
         }
 
+        private void Declaraciones()
+        {
+            using (SqlConnection cnn = new SqlConnection(conexion))
+            {
+                string query = "SELECT  d.IdDeclaracion as decla ,p.Nombre+' '+p.Apellido+': '+m.Descripcion as declaracion FROM  DeclaracionAduanera as d inner join Mercancia as m on m.IdDeclaracion=d.IdDeclaracion inner join pasajero as p on p.IdPasajero=d.IdPasajero where EstadoDeclaracion<>'Incautada' or  EstadoDeclaracion<>'Liberada' ";
+                using (SqlCommand cmd = new SqlCommand(query, cnn))
+                {
+                    cnn.Open();
+                    ddldeclaracion.DataSource = cmd.ExecuteReader();
+                    ddldeclaracion.DataTextField = "declaracion";
+                    ddldeclaracion.DataValueField = "decla";
+                    ddldeclaracion.DataBind();
+                }
+                ddldeclaracion.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Seleccione la declaración--", "0"));
+            }
+        }
 
 
 
         private void CargarResultadoInspeccion()
         {
-            ddlresultado.Items.Clear(); 
+            ddlresultado.Items.Clear();
             ddlresultado.Items.Add(new ListItem("Seleccione el Resultado Final", ""));
             ddlresultado.Items.Add(new ListItem("Requiere Inspección", "Requiere Inspección"));
             ddlresultado.Items.Add(new ListItem("Aprobado", "Aprobado"));
@@ -264,7 +267,7 @@ WHERE r.IdRevision = @Id;
                     if (reader.Read())
                     {
                         txtCodigoInterno.Text = reader["IdRevision"].ToString();
-                        txtdeclaracion.Text = reader["IdDeclaracion"].ToString();
+                        ddldeclaracion.Text = reader["IdDeclaracion"].ToString();
 
                         // Inspector
                         ddlreponsable.SelectedValue = reader["intCodUsuario"].ToString();
@@ -336,20 +339,20 @@ WHERE r.IdRevision = @Id;
         protected void LimpiarCampos(object sender, EventArgs e)
         {
             txtCodigoInterno.Text = "";
-            txtdeclaracion.Text = "";
+            ddldeclaracion.SelectedIndex = 0;
 
             txtobservar.Text = "";
             ddlreponsable.SelectedIndex = 0;
             txtfecha.Text = "";
 
             ddlresultado.SelectedIndex = 0;
-           
 
-         
+
+
         }
 
 
-        
+
 
 
 

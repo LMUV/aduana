@@ -160,6 +160,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;       
 }
+
+                           
         .tabla-mantenimiento th {
             background-color: #0b3d91; 
             color: white;
@@ -256,6 +258,34 @@
             display: block;
             margin-top: 5px;
         }
+
+        .menu-row {
+    display: flex;
+    align-items: center;
+}
+
+.icon-mini a {
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    display: block;
+    margin-top:20px;
+    margin-left: 2px; /* separarlo del botón */
+}
+
+.icon-mini img {
+    width: 60px;
+    height: 40px;
+    display: block;
+    margin: 0 auto;
+}
+
+.icon-mini h5 {
+    margin: 2px 0 0 0;
+    padding: 0;
+    font-size: 11px;
+}
+
     </style>
 </head>
 
@@ -285,8 +315,22 @@
 
         <!--  Contenido -->
         <div class="main-content">
-            <asp:Button ID="btninvform" runat="server" Text="Nueva Inspección" CssClass="btn-primary" OnClick="btnEstados_Click" />
+            <div class="menu-row">
+    <asp:Button ID="btninvform" runat="server" Text="Nueva Inspección" CssClass="btn-primary" OnClick="btnEstados_Click" />
+
+    <div class="icon-mini">
+        <a href="Mercancias.aspx">
+            <img src="Imagenes/mercancias.png" alt="Mercancias" />
+            <h5>Mercancias</h5>
+        </a>
+    </div>
+</div>
+
            
+     
+   
+
+
             <div class="grid-container">
                 <asp:GridView ID="gvEquipos" runat="server" AutoGenerateColumns="False"
                     CssClass="tabla-mantenimiento" GridLines="None" OnRowCommand="gvEstados_RowCommand">
@@ -301,6 +345,13 @@
 
                        
                         <asp:BoundField DataField="Observaciones" HeaderText="Observaciones" />
+                                                <asp:TemplateField HeaderText="Ver">
+                    <ItemTemplate>
+                        <asp:Button ID="btnVer1" runat="server" Text=" Mercancias"
+                            CommandName="Verr" CommandArgument='<%# Eval("IdDeclaracion") %>'
+                            CssClass="btn btn-info text-white fw-bold px-3 py-1" />
+                    </ItemTemplate>
+                </asp:TemplateField>
                         <asp:TemplateField HeaderText="Acción">
                             <ItemTemplate>
                                 <asp:Button ID="btnVer" runat="server" Text="Realizar Revision"
@@ -308,6 +359,8 @@
                                     CssClass="btn btn-info text-white fw-bold px-3 py-1" />
                             </ItemTemplate>
                         </asp:TemplateField>
+
+                         
                     </Columns>
                 </asp:GridView>
             </div>
@@ -319,9 +372,10 @@
             <h2>Sistema Aduanero</h2>
             <span>Navegación</span>
             <a href="Inicio.aspx">Inicio</a>
-            <a href="Historial.aspx">Historial</a>
+            
             <a href="Estados.aspx"  class="active">Estado</a>
-            <a href="Declaraciones.aspx">Declaraciones</a>
+            <a href="Historial.aspx">Historial</a>
+         
             
             <asp:LinkButton ID="btnSalir" runat="server" CssClass="logout" OnClick="btnSalir_Click">Salir</asp:LinkButton>
         </div>
