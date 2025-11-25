@@ -1,6 +1,3 @@
-
-
-
 CREATE DATABASE Sistema;
 GO
 
@@ -464,6 +461,37 @@ BEGIN
 END;
 GO
 
-      
-  
-           
+-- Procedimiento para insertar una declaración y devolver el Id creado
+CREATE OR ALTER PROCEDURE PA_INSERT_DECLARACION
+    @IdPasajero INT,
+    @IdVuelo INT,
+    @FechaDeclaracion DATETIME,
+    @EstadoDeclaracion NVARCHAR(20),
+    @Observaciones NVARCHAR(MAX) = NULL,
+    @NewId INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.DeclaracionAduanera (IdPasajero, IdVuelo, FechaDeclaracion, EstadoDeclaracion, Observaciones)
+    VALUES (@IdPasajero, @IdVuelo, @FechaDeclaracion, @EstadoDeclaracion, @Observaciones);
+
+    SET @NewId = CAST(SCOPE_IDENTITY() AS INT);
+END;
+GO
+
+-- Procedimiento para insertar una mercancia ligada a una declaración
+CREATE OR ALTER PROCEDURE PA_INSERT_MERCANCIA
+    @IdDeclaracion INT,
+    @Descripcion NVARCHAR(255),
+    @Tipo NVARCHAR(100),
+    @ValorDeclarado DECIMAL(10,2) = NULL,
+    @ResultadoInspeccion NVARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO dbo.Mercancia (IdDeclaracion, Descripcion, Tipo, ValorDeclarado, ResultadoInspeccion)
+    VALUES (@IdDeclaracion, @Descripcion, @Tipo, @ValorDeclarado, @ResultadoInspeccion);
+END;
+GO

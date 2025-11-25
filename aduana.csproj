@@ -267,7 +267,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AgregarMercancia.aspx" />
     <Content Include="Calendario.aspx" />
+    <Content Include="Declaraciones.aspx" />
     <Content Include="Estados_Inicio.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Imagenes\Avion.jpg" />
@@ -283,6 +285,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgregarMercancia.aspx.cs">
+      <DependentUpon>AgregarMercancia.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AgregarMercancia.aspx.designer.cs">
+      <DependentUpon>AgregarMercancia.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Calendario.aspx.cs">
       <DependentUpon>Calendario.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -293,6 +302,13 @@
     <Compile Include="Controllers\CtrlCadConexion.cs" />
     <Compile Include="Controllers\CtrlConexion.cs" />
     <Compile Include="Controllers\CtrlDashboard.cs" />
+    <Compile Include="Declaraciones.aspx.cs">
+      <DependentUpon>Declaraciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Declaraciones.aspx.designer.cs">
+      <DependentUpon>Declaraciones.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Estados_Inicio.aspx.cs">
       <DependentUpon>Estados_Inicio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
