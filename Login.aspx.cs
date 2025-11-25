@@ -23,7 +23,7 @@ namespace Aduana
 
             try
             { //"Data Source=NERAK\\SQLEXPRESS;Initial Catalog=DB_INV_INTEGRADO;Integrated Security=True")
-                using (SqlConnection cnn = new SqlConnection("Data Source=DESKTOP-U5A24RO\\SQLEXPRESS;Initial Catalog=SistemaAduanero1;Integrated Security=True; TrustServerCertificate=True;")
+                using (SqlConnection cnn = new SqlConnection("Data Source=NERAK\\SQLEXPRESS;Initial Catalog=SistemaAduanero;Integrated Security=True; TrustServerCertificate=True;")
 
                     )
                 {
